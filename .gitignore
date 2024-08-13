@@ -1,0 +1,16 @@
+# Docker
+*.log
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+
+# MySQL
+mysql-data/
+
