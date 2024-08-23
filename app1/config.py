@@ -22,4 +22,3 @@ db_config = {
     'password': os.getenv('DB_PASSWORD', 'Labi6123'),
     'database': os.getenv('DB_NAME', 'token_api')
 }
-
