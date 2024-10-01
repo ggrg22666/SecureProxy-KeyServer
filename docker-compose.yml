@@ -1,48 +1,61 @@
 services:
+  # Сервис для app1
   app1:
     build:
       context: ./app1
     container_name: app1
     ports:
       - "5001:5001"
-    networks:
-      - pythonproject4_app-network
     environment:
-      - DB_HOST=mysql
-      - DB_USER=root
-      - DB_PASSWORD=Labi6123
-      - DB_NAME=token_api
-    volumes:
-      - ./app1:/app
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Labi6123
+      DB_NAME: token_api
+    depends_on:
+      - mysql
+    networks:
+      - app_network
 
+  # Сервис для app2
   app2:
     build:
       context: ./app2
     container_name: app2
     ports:
       - "5004:5004"
+    depends_on:
+      - app1
     networks:
-      - pythonproject4_app-network
-    volumes:
-      - ./app2:/app
+      - app_network
 
-  mysql:
-    image: mysql/mysql-server
-    container_name: mysql
+  # Сервис для TestServ
+  testserv:
+    build:
+      context: /Applications/pythonProject5
+    container_name: testserv
+    ports:
+      - "5005:5005"
     networks:
-      - pythonproject4_app-network
+      - app_network
+
+  # Сервис для MySQL
+  mysql:
+    image: mysql:8.0  # Образ, совместимый с ARM
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: Labi6123
       MYSQL_DATABASE: token_api
-    platform: linux/amd64
-    ports:
-      - "3307:3307"
     volumes:
-      - mysql-data:/var/lib/mysql
-
-networks:
-  pythonproject4_app-network:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+    ports:
+      - "3307:3306"
 
 volumes:
-  mysql-data:
+  mysql_data:
 
+networks:
+  app_network:
+    driver: bridge
