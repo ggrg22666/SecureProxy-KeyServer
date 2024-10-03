@@ -32,7 +32,7 @@ services:
   # Сервис для TestServ
   testserv:
     build:
-      context: /Applications/pythonProject5
+      context: ./TestServ+client
     container_name: testserv
     ports:
       - "5005:5005"
